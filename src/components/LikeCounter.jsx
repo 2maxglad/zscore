@@ -33,6 +33,7 @@ const LikeCounter = ({ language }) => {
                 }
 
                 const viewsData = await viewsResponse.json();
+                console.log('Views data:', viewsData);
                 if (viewsData && viewsData.count !== undefined) {
                     setViews(viewsData.count);
                 }
@@ -40,6 +41,7 @@ const LikeCounter = ({ language }) => {
                 // Get likes count (without incrementing)
                 const likesResponse = await fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${KEY_LIKES}/`);
                 const likesData = await likesResponse.json();
+                console.log('Likes data:', likesData);
                 if (likesData && likesData.count !== undefined) {
                     setLikes(likesData.count);
                 }
@@ -58,13 +60,22 @@ const LikeCounter = ({ language }) => {
 
         try {
             setHasLiked(true); // Optimistic update
-            setLikes(prev => (prev || 0) + 1);
+            const newCount = (likes || 0) + 1;
+            setLikes(newCount);
             localStorage.setItem('zscore_liked', 'true');
 
-            await fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${KEY_LIKES}/up`);
+            console.log('Sending like to server...');
+            const response = await fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${KEY_LIKES}/up`);
+            const data = await response.json();
+            console.log('Like response:', data);
+
+            // Update with server value
+            if (data && data.count !== undefined) {
+                setLikes(data.count);
+                console.log('Updated likes to:', data.count);
+            }
         } catch (error) {
             console.error('Error liking:', error);
-            // Revert on error if needed, but for a like button it's usually fine to just ignore
         }
     };
 
