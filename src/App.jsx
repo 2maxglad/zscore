@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import PatientForm from './components/PatientForm';
 import MeasurementInput from './components/MeasurementInput';
-import LikeCounter from './components/LikeCounter';
 import { PARAMETERS } from './data/parameters';
 import { translations } from './utils/translations';
 import './index.css';
@@ -72,9 +71,7 @@ function App() {
             RU
           </button>
         </div>
-
-        <LikeCounter language={language} />
-      </header >
+      </header>
 
       <main className="app-main">
         <PatientForm
