@@ -72,24 +72,27 @@ const LikeCounter = ({ language }) => {
 
     return (
         <div className="like-counter-container">
-            <div className="counter-item views-item">
-                <span className="counter-icon">👁️</span>
-                <span className="counter-value">{views !== null ? views : '...'}</span>
-                <span className="counter-label">{language === 'ru' ? 'Просмотров' : 'Views'}</span>
+            <div className="like-cta">{t.likeCta}</div>
+            <div className="counter-stats">
+                <div className="counter-item views-item">
+                    <span className="counter-icon">👁️</span>
+                    <span className="counter-value">{views !== null ? views : '...'}</span>
+                    <span className="counter-label">{t.views}</span>
+                </div>
+
+                <div className="counter-divider">|</div>
+
+                <button
+                    className={`counter-item like-button ${hasLiked ? 'liked' : ''}`}
+                    onClick={handleLike}
+                    disabled={hasLiked}
+                    title={hasLiked ? t.youLiked : t.likeProject}
+                >
+                    <span className="counter-icon">{hasLiked ? '❤️' : '🤍'}</span>
+                    <span className="counter-value">{likes !== null ? likes : '...'}</span>
+                    <span className="counter-label">{t.likes}</span>
+                </button>
             </div>
-
-            <div className="counter-divider">|</div>
-
-            <button
-                className={`counter-item like-button ${hasLiked ? 'liked' : ''}`}
-                onClick={handleLike}
-                disabled={hasLiked}
-                title={hasLiked ? (language === 'ru' ? 'Вы уже оценили' : 'You already liked') : (language === 'ru' ? 'Оценить проект' : 'Like this project')}
-            >
-                <span className="counter-icon">{hasLiked ? '❤️' : '🤍'}</span>
-                <span className="counter-value">{likes !== null ? likes : '...'}</span>
-                <span className="counter-label">{language === 'ru' ? 'Лайков' : 'Likes'}</span>
-            </button>
         </div>
     );
 };

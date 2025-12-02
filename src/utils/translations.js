@@ -27,7 +27,12 @@ export const translations = {
         density: "Density",
         distribution: "Z-Score Distribution",
         normal: "Normal",
-        clinicalInfo: "Clinical Info"
+        clinicalInfo: "Clinical Info",
+        likeCta: "Enjoying this? Support with a like! ❤️",
+        views: "Views",
+        likes: "Likes",
+        youLiked: "You already liked",
+        likeProject: "Like this project"
     },
     ru: {
         title: "❤️ Калькулятор Z-Score (ЭхоКГ)",
@@ -57,6 +62,11 @@ export const translations = {
         density: "Плотность",
         distribution: "Распределение Z-Score",
         normal: "Норма",
-        clinicalInfo: "Клиническая информация"
+        clinicalInfo: "Клиническая информация",
+        likeCta: "Понравился проект? Поддержите лайком! ❤️",
+        views: "Просмотров",
+        likes: "Лайков",
+        youLiked: "Вы уже оценили",
+        likeProject: "Оценить проект"
     }
 };

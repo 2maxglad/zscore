@@ -573,14 +573,32 @@ input[type="number"] {
 /* Like Counter */
 .like-counter-container {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.like-cta {
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.counter-stats {
+  display: flex;
   align-items: center;
   justify-content: center;
   gap: 15px;
-  margin-top: 30px;
-  padding: 15px;
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 12px;
-  backdrop-filter: blur(5px);
 }
 
 .counter-item {
@@ -588,46 +606,58 @@ input[type="number"] {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-width: 60px;
+  min-width: 50px;
 }
 
 .counter-icon {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   margin-bottom: 2px;
 }
 
 .counter-value {
   font-weight: 700;
-  font-size: 1.1rem;
-  color: #2d3748;
+  font-size: 1rem;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .counter-label {
-  font-size: 0.7rem;
-  color: #718096;
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.9);
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  font-weight: 500;
 }
 
 .counter-divider {
-  color: #cbd5e0;
-  font-size: 1.5rem;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 1.2rem;
   font-weight: 300;
 }
 
 .like-button {
-  background: white;
-  border: 2px solid #e2e8f0;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
   border-radius: 8px;
-  padding: 8px 16px;
+  padding: 6px 12px;
   cursor: pointer;
   transition: all 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.like-button .counter-value {
+  color: #2d3748;
+  text-shadow: none;
+}
+
+.like-button .counter-label {
+  color: #718096;
 }
 
 .like-button:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-color: #667eea;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  background: white;
 }
 
 .like-button:active:not(:disabled) {
@@ -635,8 +665,7 @@ input[type="number"] {
 }
 
 .like-button.liked {
-  background: #fff5f5;
-  border-color: #fc8181;
+  background: white;
   cursor: default;
 }
 
@@ -645,5 +674,5 @@ input[type="number"] {
 }
 
 .like-button:disabled {
-  opacity: 0.9;
+  opacity: 1;
 }

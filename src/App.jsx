@@ -72,7 +72,9 @@ function App() {
             RU
           </button>
         </div>
-      </header>
+
+        <LikeCounter language={language} />
+      </header >
 
       <main className="app-main">
         <PatientForm
@@ -125,7 +127,6 @@ function App() {
           )}
         </div>
 
-        <LikeCounter language={language} />
       </main >
       <footer style={{
         textAlign: 'center',
