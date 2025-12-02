@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { translations } from '../utils/translations';
 
-const NAMESPACE = 'zscore-2maxglad';
-const KEY_VIEWS = 'views';
-const KEY_LIKES = 'likes';
-
 const LikeCounter = ({ language }) => {
     const [likes, setLikes] = useState(null);
     const [views, setViews] = useState(null);
@@ -26,24 +22,24 @@ const LikeCounter = ({ language }) => {
 
                 let viewsResponse;
                 if (!sessionVisited) {
-                    viewsResponse = await fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${KEY_VIEWS}/up`);
+                    viewsResponse = await fetch('https://api.countapi.xyz/hit/zscore-2maxglad/views');
                     sessionStorage.setItem('zscore_visited', 'true');
                 } else {
-                    viewsResponse = await fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${KEY_VIEWS}/`);
+                    viewsResponse = await fetch('https://api.countapi.xyz/get/zscore-2maxglad/views');
                 }
 
                 const viewsData = await viewsResponse.json();
                 console.log('Views data:', viewsData);
-                if (viewsData && viewsData.count !== undefined) {
-                    setViews(viewsData.count);
+                if (viewsData && viewsData.value !== undefined) {
+                    setViews(viewsData.value);
                 }
 
                 // Get likes count (without incrementing)
-                const likesResponse = await fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${KEY_LIKES}/`);
+                const likesResponse = await fetch('https://api.countapi.xyz/get/zscore-2maxglad/likes');
                 const likesData = await likesResponse.json();
                 console.log('Likes data:', likesData);
-                if (likesData && likesData.count !== undefined) {
-                    setLikes(likesData.count);
+                if (likesData && likesData.value !== undefined) {
+                    setLikes(likesData.value);
                 }
             } catch (error) {
                 console.error('Error fetching counters:', error);
@@ -65,14 +61,14 @@ const LikeCounter = ({ language }) => {
             localStorage.setItem('zscore_liked', 'true');
 
             console.log('Sending like to server...');
-            const response = await fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${KEY_LIKES}/up`);
+            const response = await fetch('https://api.countapi.xyz/hit/zscore-2maxglad/likes');
             const data = await response.json();
             console.log('Like response:', data);
 
             // Update with server value
-            if (data && data.count !== undefined) {
-                setLikes(data.count);
-                console.log('Updated likes to:', data.count);
+            if (data && data.value !== undefined) {
+                setLikes(data.value);
+                console.log('Updated likes to:', data.value);
             }
         } catch (error) {
             console.error('Error liking:', error);
