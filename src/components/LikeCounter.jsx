@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { translations } from '../utils/translations';
+import counterapi from 'counterapi';
+
+const API_KEY = 'ut_NuxkveMLVYURPDvRtB2ROjzSQGlYoNeTGIZ6cubj';
 
 const LikeCounter = ({ language }) => {
     const [likes, setLikes] = useState(null);
@@ -16,31 +19,30 @@ const LikeCounter = ({ language }) => {
         // Fetch initial data
         const fetchData = async () => {
             try {
+                // Initialize counter client
+                const counter = counterapi(API_KEY);
+
                 // Increment views (simple hit counter)
                 // We use sessionStorage to prevent counting refresh as new visit in same session
                 const sessionVisited = sessionStorage.getItem('zscore_visited');
 
-                let viewsResponse;
+                let viewsCount;
                 if (!sessionVisited) {
-                    viewsResponse = await fetch('https://api.countapi.xyz/hit/zscore-2maxglad/views');
+                    const viewsResult = await counter.up('zscore-views');
+                    viewsCount = viewsResult.count;
                     sessionStorage.setItem('zscore_visited', 'true');
                 } else {
-                    viewsResponse = await fetch('https://api.countapi.xyz/get/zscore-2maxglad/views');
+                    const viewsResult = await counter.get('zscore-views');
+                    viewsCount = viewsResult.count;
                 }
 
-                const viewsData = await viewsResponse.json();
-                console.log('Views data:', viewsData);
-                if (viewsData && viewsData.value !== undefined) {
-                    setViews(viewsData.value);
-                }
+                console.log('Views count:', viewsCount);
+                setViews(viewsCount);
 
                 // Get likes count (without incrementing)
-                const likesResponse = await fetch('https://api.countapi.xyz/get/zscore-2maxglad/likes');
-                const likesData = await likesResponse.json();
-                console.log('Likes data:', likesData);
-                if (likesData && likesData.value !== undefined) {
-                    setLikes(likesData.value);
-                }
+                const likesResult = await counter.get('zscore-likes');
+                console.log('Likes count:', likesResult.count);
+                setLikes(likesResult.count);
             } catch (error) {
                 console.error('Error fetching counters:', error);
             } finally {
@@ -61,14 +63,14 @@ const LikeCounter = ({ language }) => {
             localStorage.setItem('zscore_liked', 'true');
 
             console.log('Sending like to server...');
-            const response = await fetch('https://api.countapi.xyz/hit/zscore-2maxglad/likes');
-            const data = await response.json();
-            console.log('Like response:', data);
+            const counter = counterapi(API_KEY);
+            const result = await counter.up('zscore-likes');
+            console.log('Like response:', result);
 
             // Update with server value
-            if (data && data.value !== undefined) {
-                setLikes(data.value);
-                console.log('Updated likes to:', data.value);
+            if (result && result.count !== undefined) {
+                setLikes(result.count);
+                console.log('Updated likes to:', result.count);
             }
         } catch (error) {
             console.error('Error liking:', error);
