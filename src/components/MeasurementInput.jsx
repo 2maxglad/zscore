@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { getZFromLMS, getZFromMeanSD, getZFromCoefficients, getPercentileFromZ, getInterpolatedZScore } from '../utils/zScoreLogic';
 import { PARAMETERS } from '../data/parameters';
+import { translations } from '../utils/translations';
+import { tooltips } from '../data/tooltips';
 import ZScoreChart from './ZScoreChart';
 
-const MeasurementInput = ({ paramId, patientData }) => {
+const MeasurementInput = ({ paramId, patientData, language }) => {
     const [value, setValue] = useState('');
     const [zScore, setZScore] = useState(null);
     const [percentile, setPercentile] = useState(null);
@@ -12,44 +14,15 @@ const MeasurementInput = ({ paramId, patientData }) => {
     const [showTooltip, setShowTooltip] = useState(false);
 
     const param = PARAMETERS[paramId];
+    const t = translations[language];
 
     const getTooltipText = () => {
-        const tooltips = {
-            'Rvawd': 'Толщина передней стенки правого желудочка в диастолу. Увеличение может указывать на гипертрофию ПЖ.',
-            'Rvdd': 'Размер правого желудочка в диастолу. Расширение может указывать на объемную перегрузку.',
-            'Ivsd': 'Толщина межжелудочковой перегородки в диастолу. Увеличение наблюдается при гипертрофии ЛЖ.',
-            'Lvedd': 'Конечно-диастолический размер левого желудочка. Важный показатель систолической функции.',
-            'Lvesd': 'Конечно-систолический размер левого желудочка. Используется для расчета фракции выброса.',
-            'Lvpwd': 'Толщина задней стенки левого желудочка в диастолу. Увеличение при гипертрофии ЛЖ.',
-            'Anulus': 'Диаметр фиброзного кольца аортального клапана. Важен для выбора протеза клапана.',
-            'Sov': 'Размер синусов Вальсальвы. Расширение может указывать на аневризму аорты.',
-            'Stj': 'Синотубулярное соединение. Место перехода синусов в восходящую аорту.',
-            'Aao': 'Диаметр восходящей аорты. Расширение >40мм требует наблюдения.',
-            'Taa': 'Диаметр поперечной дуги аорты.',
-            'Isthmus': 'Перешеек аорты. Узкое место между дугой и нисходящей аортой.',
-            'Dao': 'Диаметр нисходящей аорты.',
-            'Mpa': 'Диаметр главной легочной артерии. Расширение при легочной гипертензии.',
-            'Lpa': 'Диаметр левой легочной артерии.',
-            'Rpa': 'Диаметр правой легочной артерии.',
-            'Pv': 'Диаметр клапана легочной артерии.',
-            'Mv': 'Диаметр митрального клапана.',
-            'Tv': 'Диаметр трикуспидального клапана.',
-            'Aov': 'Диаметр аортального клапана.',
-            'Lmca': 'Левая главная коронарная артерия. Кровоснабжает левый желудочек.',
-            'Cx': 'Огибающая ветвь левой коронарной артерии.',
-            'Lad': 'Передняя нисходящая артерия. Наиболее важная коронарная артерия.',
-            'Rcaprox': 'Проксимальная часть правой коронарной артерии.',
-            'Rcamed': 'Средняя часть правой коронарной артерии.',
-            'Rcadist': 'Дистальная часть правой коронарной артерии.',
-            'Tapse': 'Экскурсия кольца трикуспидального клапана. Показатель систолической функции ПЖ. Норма >17мм.',
-            'Mapse': 'Экскурсия кольца митрального клапана. Показатель систолической функции ЛЖ.'
-        };
-        return tooltips[paramId] || 'Клинические данные отсутствуют';
+        return tooltips[language][paramId] || (language === 'ru' ? 'Клинические данные отсутствуют' : 'Clinical info not available');
     };
 
     useEffect(() => {
         calculateZScore();
-    }, [value, patientData]);
+    }, [value, patientData, language]);
 
     const getRefValues = () => {
         const { weight, bsa, age, gender } = patientData;
@@ -167,13 +140,13 @@ const MeasurementInput = ({ paramId, patientData }) => {
                 let gridValue, grid, meanArray, sdArray;
 
                 if (weight <= 4) {
-                    if (!weight) { setError("Требуется вес"); return; }
+                    if (!weight) { setError(t.weightRequired); return; }
                     gridValue = weight;
                     grid = param.data.weight.grid;
                     meanArray = param.data.weight.mean;
                     sdArray = param.data.weight.sd;
                 } else {
-                    if (!bsa) { setError("Требуется BSA"); return; }
+                    if (!bsa) { setError(t.bsaRequired); return; }
                     gridValue = bsa;
                     grid = param.data.bsa.grid;
                     meanArray = param.data.bsa.mean;
@@ -183,7 +156,7 @@ const MeasurementInput = ({ paramId, patientData }) => {
                 z = getInterpolatedZScore(val, gridValue, grid, meanArray, sdArray);
 
             } else if (param.type === 'gautier_log_linear' || param.type === 'zilberman_log_linear') {
-                if (!bsa) { setError("Требуется BSA"); return; }
+                if (!bsa) { setError(t.bsaRequired); return; }
                 const data = param.data[gender];
 
                 let normalizedVal = val;
@@ -193,11 +166,11 @@ const MeasurementInput = ({ paramId, patientData }) => {
                 z = (Math.log(normalizedVal) - predictedMeanLog) / data.sd;
 
             } else if (param.type === 'peterssen_polynomial') {
-                if (!bsa) { setError("Требуется BSA"); return; }
+                if (!bsa) { setError(t.bsaRequired); return; }
                 z = getZFromCoefficients(val, bsa, param.data.coefficients);
 
             } else if (param.type === 'dallaire_sqrt') {
-                if (!bsa) { setError("Требуется BSA"); return; }
+                if (!bsa) { setError(t.bsaRequired); return; }
                 const { mean_intercept, mean_slope, sd_intercept, sd_slope } = param.data;
                 const sqrtBSA = Math.sqrt(bsa);
                 const mean = mean_intercept + mean_slope * sqrtBSA;
@@ -205,7 +178,7 @@ const MeasurementInput = ({ paramId, patientData }) => {
                 z = (val - mean) / sd;
 
             } else if (param.type === 'koestenberger_interpolated') {
-                if (age === undefined || age === null) { setError("Требуется возраст"); return; }
+                if (age === undefined || age === null) { setError(t.ageRequired); return; }
                 const gridValue = age;
                 const grid = param.data.grid;
                 const meanArray = param.data.mean;
@@ -220,11 +193,11 @@ const MeasurementInput = ({ paramId, patientData }) => {
                 setError(null);
             } else {
                 setZScore(null);
-                setError("Вне диапазона");
+                setError(t.outOfRange);
             }
         } catch (e) {
             console.error(e);
-            setError("Ошибка расчета");
+            setError(t.calcError);
         }
     };
 
@@ -249,7 +222,7 @@ const MeasurementInput = ({ paramId, patientData }) => {
                         ℹ️
                     </span>
                 </label>
-                {param.nameRu && <span className="russian-name">{param.nameRu}</span>}
+                {language === 'ru' && param.nameRu && <span className="russian-name">{param.nameRu}</span>}
                 <span>{param.ref}</span>
 
                 {showTooltip && (
@@ -274,7 +247,7 @@ const MeasurementInput = ({ paramId, patientData }) => {
                             <span className="ref-label">-2σ:</span>
                             <span className="ref-number">{refValues.minus2.toFixed(1)}</span>
                         </div>
-                        <div className="ref-value ref-zero" title="Z = 0 (норма)">
+                        <div className="ref-value ref-zero" title={`Z = 0 (${t.normal})`}>
                             <span className="ref-label">0:</span>
                             <span className="ref-number">{refValues.zero.toFixed(1)}</span>
                         </div>
@@ -297,13 +270,13 @@ const MeasurementInput = ({ paramId, patientData }) => {
                     <span className="error-message">⚠️ {error}</span>
                 ) : zScore !== null ? (
                     <>
-                        {showChart && <ZScoreChart zScore={zScore} percentile={percentile} />}
+                        {showChart && <ZScoreChart zScore={zScore} percentile={percentile} language={language} />}
                         <div>
                             <div className={`z-score-value ${getZColor(zScore)}`}>
                                 {zScore >= 0 ? '+' : ''}{zScore.toFixed(2)} z
                             </div>
                             <div className="z-score-percentile">
-                                {percentile.toFixed(1)}-й перцентиль
+                                {percentile.toFixed(1)} {t.percentile}
                             </div>
                         </div>
                     </>

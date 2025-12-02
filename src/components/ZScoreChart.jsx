@@ -1,8 +1,11 @@
 import React from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
+import { translations } from '../utils/translations';
 
-const ZScoreChart = ({ zScore, percentile }) => {
+const ZScoreChart = ({ zScore, percentile, language }) => {
+    const t = translations[language];
+
     // Генерируем данные для нормального распределения
     const generateNormalDistribution = () => {
         const data = [];
@@ -99,7 +102,7 @@ const ZScoreChart = ({ zScore, percentile }) => {
         tooltip: {
             enabled: true,
             formatter: function () {
-                return `<b>Z-Score:</b> ${this.x.toFixed(2)}<br/><b>Плотность:</b> ${this.y.toFixed(3)}`;
+                return `<b>Z-Score:</b> ${this.x.toFixed(2)}<br/><b>${t.density}:</b> ${this.y.toFixed(3)}`;
             },
             style: { fontSize: '11px' }
         }
@@ -122,11 +125,11 @@ const ZScoreChart = ({ zScore, percentile }) => {
             pointerEvents: 'none'
         }}>
             <div style={{ fontSize: '11px', marginBottom: '5px', color: '#4a5568', fontWeight: '600' }}>
-                Распределение Z-Score
+                {t.distribution}
             </div>
             <HighchartsReact highcharts={Highcharts} options={options} />
             <div style={{ fontSize: '10px', color: '#718096', marginTop: '5px', textAlign: 'center' }}>
-                Перцентиль: <strong>{percentile.toFixed(1)}%</strong>
+                {t.percentile}: <strong>{percentile.toFixed(1)}%</strong>
             </div>
         </div>
     );

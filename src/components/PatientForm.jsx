@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
 import { calculateBSA } from '../utils/bsa';
+import { translations } from '../utils/translations';
 
-const PatientForm = ({ data, onChange }) => {
+const PatientForm = ({ data, onChange, language }) => {
     const { age, weight, height, gender, bsa } = data;
+    const t = translations[language];
 
     useEffect(() => {
         if (weight && height) {
@@ -20,10 +22,10 @@ const PatientForm = ({ data, onChange }) => {
 
     return (
         <div className="patient-form">
-            <h2>📊 Данные пациента</h2>
+            <h2>{t.patientData}</h2>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px' }}>
                 <div>
-                    <label>Пол</label>
+                    <label>{t.gender}</label>
                     <div style={{ display: 'flex', gap: '20px', marginTop: '10px' }}>
                         <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
                             <input
@@ -34,7 +36,7 @@ const PatientForm = ({ data, onChange }) => {
                                 onChange={handleChange}
                                 style={{ marginRight: '8px' }}
                             />
-                            <span>👨 Мужской</span>
+                            <span>{t.male}</span>
                         </label>
                         <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
                             <input
@@ -45,49 +47,49 @@ const PatientForm = ({ data, onChange }) => {
                                 onChange={handleChange}
                                 style={{ marginRight: '8px' }}
                             />
-                            <span>👩 Женский</span>
+                            <span>{t.female}</span>
                         </label>
                     </div>
                 </div>
 
                 <div>
-                    <label>Возраст (лет)</label>
+                    <label>{t.age}</label>
                     <input
                         type="number"
                         name="age"
                         value={age}
                         onChange={handleChange}
-                        placeholder="Введите возраст"
+                        placeholder={t.enterAge}
                     />
                 </div>
 
                 <div>
-                    <label>Вес (кг)</label>
+                    <label>{t.weight}</label>
                     <input
                         type="number"
                         name="weight"
                         value={weight}
                         onChange={handleChange}
-                        placeholder="Введите вес"
+                        placeholder={t.enterWeight}
                         step="0.1"
                     />
                 </div>
 
                 <div>
-                    <label>Рост (см)</label>
+                    <label>{t.height}</label>
                     <input
                         type="number"
                         name="height"
                         value={height}
                         onChange={handleChange}
-                        placeholder="Введите рост"
+                        placeholder={t.enterHeight}
                         step="0.1"
                     />
                 </div>
             </div>
 
             <div className="bsa-display">
-                <strong>Площадь поверхности тела (BSA):</strong> {bsa ? `${bsa.toFixed(3)} м²` : 'Введите вес и рост'}
+                <strong>{t.bsa}:</strong> {bsa ? `${bsa.toFixed(3)} m²` : t.enterWeightHeight}
             </div>
         </div>
     );

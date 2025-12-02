@@ -2,9 +2,13 @@ import React, { useState } from 'react';
 import PatientForm from './components/PatientForm';
 import MeasurementInput from './components/MeasurementInput';
 import { PARAMETERS } from './data/parameters';
+import { translations } from './utils/translations';
 import './index.css';
 
 function App() {
+  const [language, setLanguage] = useState('ru');
+  const t = translations[language];
+
   const [patientData, setPatientData] = useState({
     age: '',
     weight: '',
@@ -43,7 +47,7 @@ function App() {
       groupName,
       params.filter(param =>
         param.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        param.nameRu?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (param.nameRu && param.nameRu.toLowerCase().includes(searchQuery.toLowerCase())) ||
         param.ref.toLowerCase().includes(searchQuery.toLowerCase())
       )
     ]).filter(([_, params]) => params.length > 0)
@@ -52,16 +56,34 @@ function App() {
   return (
     <div className="app-container">
       <header className="app-header">
-        <h1>❤️ Калькулятор Z-Score (ЭхоКГ)</h1>
+        <h1>{t.title}</h1>
+        <div className="language-toggle">
+          <button
+            className={language === 'en' ? 'active' : ''}
+            onClick={() => setLanguage('en')}
+          >
+            EN
+          </button>
+          <button
+            className={language === 'ru' ? 'active' : ''}
+            onClick={() => setLanguage('ru')}
+          >
+            RU
+          </button>
+        </div>
       </header>
 
       <main className="app-main">
-        <PatientForm data={patientData} onChange={setPatientData} />
+        <PatientForm
+          data={patientData}
+          onChange={setPatientData}
+          language={language}
+        />
 
         <div className="search-container">
           <input
             type="text"
-            placeholder="🔍 Поиск параметров (название, русское название, источник)..."
+            placeholder={t.searchPlaceholder}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="search-input"
@@ -70,7 +92,7 @@ function App() {
             <button
               className="search-clear"
               onClick={() => setSearchQuery('')}
-              title="Очистить поиск"
+              title={t.clearSearch}
             >
               ✕
             </button>
@@ -87,15 +109,16 @@ function App() {
                     key={param.id}
                     paramId={param.id}
                     patientData={patientData}
+                    language={language}
                   />
                 ))}
               </div>
             ))
           ) : (
             <div className="no-results">
-              <p>😕 Ничего не найдено</p>
+              <p>{t.noResults}</p>
               <p style={{ fontSize: '0.9rem', color: '#718096' }}>
-                Попробуйте другой запрос
+                {t.tryAgain}
               </p>
             </div>
           )}
