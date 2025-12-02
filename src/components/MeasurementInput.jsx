@@ -167,13 +167,13 @@ const MeasurementInput = ({ paramId, patientData }) => {
                 let gridValue, grid, meanArray, sdArray;
 
                 if (weight <= 4) {
-                    if (!weight) { setError("Weight required"); return; }
+                    if (!weight) { setError("Требуется вес"); return; }
                     gridValue = weight;
                     grid = param.data.weight.grid;
                     meanArray = param.data.weight.mean;
                     sdArray = param.data.weight.sd;
                 } else {
-                    if (!bsa) { setError("BSA required"); return; }
+                    if (!bsa) { setError("Требуется BSA"); return; }
                     gridValue = bsa;
                     grid = param.data.bsa.grid;
                     meanArray = param.data.bsa.mean;
@@ -183,7 +183,7 @@ const MeasurementInput = ({ paramId, patientData }) => {
                 z = getInterpolatedZScore(val, gridValue, grid, meanArray, sdArray);
 
             } else if (param.type === 'gautier_log_linear' || param.type === 'zilberman_log_linear') {
-                if (!bsa) { setError("BSA required"); return; }
+                if (!bsa) { setError("Требуется BSA"); return; }
                 const data = param.data[gender];
 
                 let normalizedVal = val;
@@ -193,11 +193,11 @@ const MeasurementInput = ({ paramId, patientData }) => {
                 z = (Math.log(normalizedVal) - predictedMeanLog) / data.sd;
 
             } else if (param.type === 'peterssen_polynomial') {
-                if (!bsa) { setError("BSA required"); return; }
+                if (!bsa) { setError("Требуется BSA"); return; }
                 z = getZFromCoefficients(val, bsa, param.data.coefficients);
 
             } else if (param.type === 'dallaire_sqrt') {
-                if (!bsa) { setError("BSA required"); return; }
+                if (!bsa) { setError("Требуется BSA"); return; }
                 const { mean_intercept, mean_slope, sd_intercept, sd_slope } = param.data;
                 const sqrtBSA = Math.sqrt(bsa);
                 const mean = mean_intercept + mean_slope * sqrtBSA;
@@ -205,7 +205,7 @@ const MeasurementInput = ({ paramId, patientData }) => {
                 z = (val - mean) / sd;
 
             } else if (param.type === 'koestenberger_interpolated') {
-                if (age === undefined || age === null) { setError("Age required"); return; }
+                if (age === undefined || age === null) { setError("Требуется возраст"); return; }
                 const gridValue = age;
                 const grid = param.data.grid;
                 const meanArray = param.data.mean;
@@ -220,11 +220,11 @@ const MeasurementInput = ({ paramId, patientData }) => {
                 setError(null);
             } else {
                 setZScore(null);
-                setError("Out of range");
+                setError("Вне диапазона");
             }
         } catch (e) {
             console.error(e);
-            setError("Calculation error");
+            setError("Ошибка расчета");
         }
     };
 
@@ -303,7 +303,7 @@ const MeasurementInput = ({ paramId, patientData }) => {
                                 {zScore >= 0 ? '+' : ''}{zScore.toFixed(2)} z
                             </div>
                             <div className="z-score-percentile">
-                                {percentile.toFixed(1)}th percentile
+                                {percentile.toFixed(1)}-й перцентиль
                             </div>
                         </div>
                     </>

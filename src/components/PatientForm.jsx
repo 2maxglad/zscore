@@ -20,10 +20,10 @@ const PatientForm = ({ data, onChange }) => {
 
     return (
         <div className="patient-form">
-            <h2>📊 Patient Data</h2>
+            <h2>📊 Данные пациента</h2>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px' }}>
                 <div>
-                    <label>Gender</label>
+                    <label>Пол</label>
                     <div style={{ display: 'flex', gap: '20px', marginTop: '10px' }}>
                         <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
                             <input
@@ -34,7 +34,7 @@ const PatientForm = ({ data, onChange }) => {
                                 onChange={handleChange}
                                 style={{ marginRight: '8px' }}
                             />
-                            <span>👨 Male</span>
+                            <span>👨 Мужской</span>
                         </label>
                         <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
                             <input
@@ -45,49 +45,49 @@ const PatientForm = ({ data, onChange }) => {
                                 onChange={handleChange}
                                 style={{ marginRight: '8px' }}
                             />
-                            <span>👩 Female</span>
+                            <span>👩 Женский</span>
                         </label>
                     </div>
                 </div>
 
                 <div>
-                    <label>Age (years)</label>
+                    <label>Возраст (лет)</label>
                     <input
                         type="number"
                         name="age"
                         value={age}
                         onChange={handleChange}
-                        placeholder="Enter age"
+                        placeholder="Введите возраст"
                     />
                 </div>
 
                 <div>
-                    <label>Weight (kg)</label>
+                    <label>Вес (кг)</label>
                     <input
                         type="number"
                         name="weight"
                         value={weight}
                         onChange={handleChange}
-                        placeholder="Enter weight"
+                        placeholder="Введите вес"
                         step="0.1"
                     />
                 </div>
 
                 <div>
-                    <label>Height (cm)</label>
+                    <label>Рост (см)</label>
                     <input
                         type="number"
                         name="height"
                         value={height}
                         onChange={handleChange}
-                        placeholder="Enter height"
+                        placeholder="Введите рост"
                         step="0.1"
                     />
                 </div>
             </div>
 
             <div className="bsa-display">
-                <strong>Body Surface Area (BSA):</strong> {bsa ? `${bsa.toFixed(3)} m²` : 'Enter weight and height'}
+                <strong>Площадь поверхности тела (BSA):</strong> {bsa ? `${bsa.toFixed(3)} м²` : 'Введите вес и рост'}
             </div>
         </div>
     );

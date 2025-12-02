@@ -99,7 +99,7 @@ const ZScoreChart = ({ zScore, percentile }) => {
         tooltip: {
             enabled: true,
             formatter: function () {
-                return `<b>Z-Score:</b> ${this.x.toFixed(2)}<br/><b>Density:</b> ${this.y.toFixed(3)}`;
+                return `<b>Z-Score:</b> ${this.x.toFixed(2)}<br/><b>Плотность:</b> ${this.y.toFixed(3)}`;
             },
             style: { fontSize: '11px' }
         }
