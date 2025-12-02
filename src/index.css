@@ -569,3 +569,81 @@ input[type="number"] {
     font-size: 0.85rem;
   }
 }
+
+/* Like Counter */
+.like-counter-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 30px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 12px;
+  backdrop-filter: blur(5px);
+}
+
+.counter-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 60px;
+}
+
+.counter-icon {
+  font-size: 1.2rem;
+  margin-bottom: 2px;
+}
+
+.counter-value {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #2d3748;
+}
+
+.counter-label {
+  font-size: 0.7rem;
+  color: #718096;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.counter-divider {
+  color: #cbd5e0;
+  font-size: 1.5rem;
+  font-weight: 300;
+}
+
+.like-button {
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.like-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: #667eea;
+}
+
+.like-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.like-button.liked {
+  background: #fff5f5;
+  border-color: #fc8181;
+  cursor: default;
+}
+
+.like-button.liked .counter-value {
+  color: #e53e3e;
+}
+
+.like-button:disabled {
+  opacity: 0.9;
+}

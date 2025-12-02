@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PatientForm from './components/PatientForm';
 import MeasurementInput from './components/MeasurementInput';
+import LikeCounter from './components/LikeCounter';
 import { PARAMETERS } from './data/parameters';
 import { translations } from './utils/translations';
 import './index.css';
@@ -123,8 +124,20 @@ function App() {
             </div>
           )}
         </div>
-      </main>
-    </div>
+
+        <LikeCounter language={language} />
+      </main >
+      <footer style={{
+        textAlign: 'center',
+        marginTop: '40px',
+        opacity: 0.1,
+        fontSize: '10px',
+        color: '#000',
+        pointerEvents: 'none'
+      }}>
+        Data source: www.pediatricheartnetwork.org
+      </footer>
+    </div >
   );
 }
 
