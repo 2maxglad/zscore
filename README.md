@@ -8,7 +8,7 @@
 
 🌐 **Live Demo:** [https://zscore-echo.netlify.app/](https://zscore-echo.netlify.app/)
 
----
+<img width="1659" height="877" alt="Снимок экрана 2025-12-16 161121" src="https://github.com/user-attachments/assets/08f432aa-41b8-468d-bfde-5d20d001191c" />
 
 ## 📖 About
 
